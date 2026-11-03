@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Grace Luxury | Fashion & Lifestyle</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="main-header">
+
+        <h1 class="logo">GRACE LUXURY</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/store">Shop</a>
+            <a href="/register">Register</a>
+            <a href="/login">Login</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Welcome Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h2 class="typing-text">
+                Welcome to Grace Luxury
+            </h2>
+
+            <p>
+                Discover elegance, beauty and confidence.
+                Everything fashionable, all in one place.
+            </p>
+
+            <a href="/store" class="shop-button">
+                Shop Now
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Fashion Categories -->
+    <section class="fashion-section">
+
+        <h2>Explore Our Collections</h2>
+
+        <p class="section-description">
+            Discover beautiful collections selected just for you.
+        </p>
+
+
+        <div class="fashion-container">
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/dress.jpg') }}" alt="Fashion Dresses">
+                <h3>Beautiful Dresses</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/necklace.jpg') }}" alt="Luxury Necklaces">
+                <h3>Necklaces & Jewellery</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/heels.jpg') }}" alt="Women's Heels">
+                <h3>Luxury Heels</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/canvas.jpg') }}" alt="Canvas Shoes">
+                <h3>Canvas Shoes</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/nike.jpg') }}" alt="Nike Sneakers">
+                <h3>Nike Sneakers</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/handbag.jpg') }}" alt="Luxury Handbags">
+                <h3>Luxury Handbags</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/crossbody.jpg') }}" alt="Crossbody Bags">
+                <h3>Crossbody Bags</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/human-hair.jpg') }}" alt="Luxury Human Hair">
+                <h3>Luxury Human Hair</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/pixie-curls.jpg') }}" alt="Pixie Curls">
+                <h3>Pixie Curls</h3>
+                <a href="/store">Explore Collection</a>
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="main-footer">
+
+        <h3>GRACE LUXURY</h3>
+
+        <p>Beauty, Elegance and Fashion in One Place.</p>
+
+        <p>&copy; 2026 Grace Luxury. All Rights Reserved.</p>
+
+    </footer>
+
+</body>
+
+</html>

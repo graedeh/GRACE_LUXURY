@@ -1,3 +1,4 @@
+```css
 /* =========================
    GENERAL STYLING
 ========================= */
@@ -24,6 +25,7 @@ body {
     background-color: #3b1f2b;
     color: white;
     padding: 20px 7%;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -58,10 +60,10 @@ body {
 
     background:
         linear-gradient(
-            rgba(59, 31, 43, 0.75),
-            rgba(59, 31, 43, 0.75)
+            rgba(59, 31, 43, 0.60),
+            rgba(59, 31, 43, 0.60)
         ),
-        url("images/hero.jpg");
+        url("/static/images/pexels-mart-production-8433595.jpg");
 
     background-size: cover;
     background-position: center;
@@ -99,11 +101,11 @@ body {
 .typing-text {
     overflow: hidden;
     white-space: nowrap;
-    width: 0;
 
+    width: 0;
     margin: 0 auto;
 
-    border-right: 4px solid #d4af37;
+    border-right: 3px solid #d4af37;
 
     animation:
         typing 3s steps(25, end) forwards,
@@ -111,6 +113,7 @@ body {
 }
 
 @keyframes typing {
+
     from {
         width: 0;
     }
@@ -121,6 +124,7 @@ body {
 }
 
 @keyframes blink {
+
     from,
     to {
         border-color: transparent;
@@ -187,9 +191,7 @@ body {
 
 .fashion-container {
     display: grid;
-
     grid-template-columns: repeat(3, 1fr);
-
     gap: 30px;
 }
 
@@ -202,7 +204,6 @@ body {
     background-color: white;
 
     border-radius: 10px;
-
     overflow: hidden;
 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -329,13 +330,11 @@ body {
 
 .form-container form {
     display: flex;
-
     flex-direction: column;
 }
 
 .form-container label {
     margin-bottom: 5px;
-
     font-weight: bold;
 }
 
@@ -353,7 +352,6 @@ body {
 
 .form-container input:focus {
     outline: none;
-
     border-color: #d4af37;
 }
 
@@ -379,7 +377,6 @@ body {
 
 .form-container a {
     color: #9b7623;
-
     text-decoration: none;
 }
 
@@ -394,15 +391,12 @@ body {
 
 .password-container {
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 }
 
 .password-container input {
     flex: 1;
-
     min-width: 0;
 }
 
@@ -435,13 +429,11 @@ body {
 
 main {
     padding: 40px 20px;
-
     text-align: center;
 }
 
 main h2 {
     margin-bottom: 30px;
-
     font-size: 28px;
 }
 
@@ -449,7 +441,6 @@ main h2 {
     display: flex;
 
     justify-content: center;
-
     flex-wrap: wrap;
 
     gap: 25px;
@@ -459,7 +450,6 @@ main h2 {
     background-color: white;
 
     width: 250px;
-
     padding: 25px;
 
     border-radius: 10px;
@@ -469,7 +459,6 @@ main h2 {
 
 .product h3 {
     color: #3b1f2b;
-
     margin-bottom: 10px;
 }
 
@@ -479,9 +468,7 @@ main h2 {
 
 .price {
     color: #9b7623;
-
     font-weight: bold;
-
     font-size: 20px;
 }
 
@@ -491,7 +478,6 @@ main h2 {
     text-decoration: none;
 
     background-color: #d4af37;
-
     color: #3b1f2b;
 
     padding: 12px 25px;
@@ -521,7 +507,6 @@ main h2 {
     .hero-content h2 {
         font-size: 38px;
     }
-
 }
 
 
@@ -529,15 +514,12 @@ main h2 {
 
     .main-header {
         flex-direction: column;
-
         text-align: center;
-
         gap: 15px;
     }
 
     .main-header nav a {
         display: inline-block;
-
         margin: 5px 8px;
     }
 
@@ -556,5 +538,4 @@ main h2 {
     .fashion-section h2 {
         font-size: 27px;
     }
-
 }

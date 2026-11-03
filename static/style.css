@@ -103,7 +103,7 @@ body {
 
     margin: 0 auto;
 
-    border-right: 3px solid #d4af37;
+    border-right: 4px solid #d4af37;
 
     animation:
         typing 3s steps(25, end) forwards,

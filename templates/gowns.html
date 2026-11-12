@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gowns | Grace Luxury</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="main-header">
+
+        <h1 class="logo">GRACE LUXURY</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/store">Shop</a>
+            <a href="/register">Register</a>
+            <a href="/login">Login</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Gowns Section -->
+    <section class="fashion-section">
+
+        <h2>Beautiful Gowns</h2>
+
+        <p class="section-description">
+            Discover elegant and stylish gowns for every occasion.
+        </p>
+
+        <div class="fashion-container">
+
+            <!-- Gown 1 -->
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/gowns/gown1.jpg') }}"
+                     alt="Elegant Women's Gown">
+                <h3>Elegant Gown</h3>
+            </div>
+
+            <!-- Gown 2 -->
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/gowns/gown2.jpg') }}"
+                     alt="Beautiful Women's Gown">
+                <h3>Beautiful Gown</h3>
+            </div>
+
+            <!-- Gown 3 -->
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/gowns/gown3.jpg') }}"
+                     alt="Classy Women's Gown">
+                <h3>Classy Gown</h3>
+            </div>
+
+            <!-- Gown 4 -->
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/gowns/gown4.jpg') }}"
+                     alt="Luxury Women's Gown">
+                <h3>Luxury Gown</h3>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="main-footer">
+
+        <h3>GRACE LUXURY</h3>
+
+        <p>Beauty, Elegance and Fashion in One Place.</p>
+
+        <p>&copy; 2026 Grace Luxury. All Rights Reserved.</p>
+
+    </footer>
+
+</body>
+
+</html>

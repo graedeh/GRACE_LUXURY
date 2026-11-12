@@ -25,5 +25,9 @@ def login():
 @app.route("/forgotten_password")
 def forgotten_password():
     return render_template("forgotten.html")
+
+@app.route("/gowns")
+def gowns():
+    return render_template("gowns.html")
 if __name__ == "__main__":
     app.run(debug=True)

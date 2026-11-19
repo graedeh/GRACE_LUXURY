@@ -70,6 +70,15 @@ CATEGORIES = {
             "wristwatches for every occasion."
         ),
         "folder": "watches"
+    },
+
+    "heels": {
+        "title": "Beautiful Heels",
+        "description": (
+            "Discover elegant heels for special occasions, "
+            "parties, celebrations and everyday style."
+        ),
+        "folder": "heels"
     }
 }
 
@@ -130,12 +139,14 @@ def home():
     shoes_images = get_category_images("shoes")
     hair_images = get_category_images("hair")
     watches_images = get_category_images("watches")
+    heels_images = get_category_images("heels")
 
     return render_template(
         "home.html",
         shoes_images=shoes_images,
         hair_images=hair_images,
-        watches_images=watches_images
+        watches_images=watches_images,
+        heels_images=heels_images
     )
 
 
@@ -179,6 +190,12 @@ def hair():
 @app.route("/watches")
 def watches():
     return show_category("watches")
+
+
+# HEELS
+@app.route("/heels")
+def heels():
+    return show_category("heels")
 
 
 # FUTURE CATEGORY PAGES

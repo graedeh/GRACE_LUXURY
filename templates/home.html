@@ -209,6 +209,35 @@
             </div>
 
 
+            <!-- HEELS -->
+            <div class="fashion-card">
+
+                <a href="/heels">
+
+                    {% if heels_images %}
+
+                        <img
+                            src="{{ url_for('static', filename='images/heels/' ~ heels_images[0]) }}"
+                            alt="Beautiful Women's Heels"
+                        >
+
+                    {% else %}
+
+                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
+                            Heels Collection
+                        </div>
+
+                    {% endif %}
+
+                </a>
+
+                <h3>Heels</h3>
+
+                <a href="/heels">Explore Collection</a>
+
+            </div>
+
+
         </div>
 
     </section>

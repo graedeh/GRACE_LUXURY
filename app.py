@@ -2,8 +2,19 @@ from pathlib import Path
 
 from flask import Flask, render_template, abort, request
 
+from database import (
+    create_tables,
+    get_all_products,
+    get_products_by_category,
+    get_product_by_id
+)
+
 
 app = Flask(__name__)
+
+
+# ENSURE DATABASE TABLES EXIST
+create_tables()
 
 
 # ALL PRODUCT CATEGORIES
@@ -173,10 +184,13 @@ def show_category(category_name):
 
     images = get_category_images(category["folder"])
 
+    products = get_products_by_category(category_name)
+
     return render_template(
         "category.html",
         category=category,
-        images=images
+        images=images,
+        products=products
     )
 
 
@@ -237,7 +251,7 @@ def home():
     )
 
 
-# ALL PRODUCTS / SHOP PAGE
+# SHOP PAGE
 @app.route("/store")
 def store():
 
@@ -255,9 +269,12 @@ def store():
             "image": images[0] if images else None
         })
 
+    products = get_all_products()
+
     return render_template(
         "store.html",
-        categories=category_cards
+        categories=category_cards,
+        products=products
     )
 
 
@@ -288,6 +305,21 @@ def search():
         query=search_query,
         results=results,
         message=message
+    )
+
+
+# INDIVIDUAL PRODUCT DETAILS
+@app.route("/product/<int:product_id>")
+def product_detail(product_id):
+
+    product = get_product_by_id(product_id)
+
+    if product is None or not product["is_active"]:
+        abort(404)
+
+    return render_template(
+        "product_detail.html",
+        product=product
     )
 
 

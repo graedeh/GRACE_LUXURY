@@ -1,0 +1,74 @@
+\<!DOCTYPE html>
+
+\<html lang="en"> \<head>     \<meta charset="UTF-8">     \<meta name="viewport" content="width=device-width, initial-scale=1.0">     \<title>Admin Login | Grace Luxury\</title>     \<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> \</head>
+
+\<body>
+
+```
+<header class="main-header">
+    <h1 class="logo">GRACE LUXURY</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/store">Shop</a>
+    </nav>
+</header>
+
+<section style="max-width: 450px; margin: 70px auto; padding: 35px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 10px;">
+
+    <h2 style="text-align: center; color: #3b1f2b;">
+        Administrator Login
+    </h2>
+
+    <p style="text-align: center;">
+        Sign in to manage Grace Luxury.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p style="color: {% if category == 'error' %}red{% else %}green{% endif %}; text-align: center;">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <label for="email">Email Address</label>
+
+        <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            style="width: 100%; padding: 12px; margin: 10px 0 20px; box-sizing: border-box;"
+        >
+
+        <label for="password">Password</label>
+
+        <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            style="width: 100%; padding: 12px; margin: 10px 0 20px; box-sizing: border-box;"
+        >
+
+        <button
+            type="submit"
+            style="width: 100%; padding: 14px; background: #3b1f2b; color: white; border: none; border-radius: 5px; cursor: pointer;"
+        >
+            Login
+        </button>
+
+    </form>
+
+</section>
+
+<footer class="main-footer">
+    <h3>GRACE LUXURY</h3>
+    <p>Beauty, Elegance and Fashion in One Place.</p>
+    <p>&copy; 2026 Grace Luxury. All Rights Reserved.</p>
+</footer>
+```
+
+\</body> \</html>

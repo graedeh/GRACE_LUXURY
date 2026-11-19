@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, request
 
 
 app = Flask(__name__)
@@ -14,7 +14,12 @@ CATEGORIES = {
             "Explore stylish clothing designed "
             "to bring out your elegance."
         ),
-        "folder": "clothing"
+        "folder": "clothing",
+        "keywords": [
+            "clothing", "clothes", "fashion", "outfits",
+            "tops", "shirts", "trousers", "skirts",
+            "jeans", "blouses", "wear"
+        ]
     },
 
     "gowns": {
@@ -23,7 +28,11 @@ CATEGORIES = {
             "Discover elegant gowns for every occasion. "
             "Find your perfect style at Grace Luxury."
         ),
-        "folder": "gowns"
+        "folder": "gowns",
+        "keywords": [
+            "gown", "gowns", "dress", "dresses",
+            "evening dress", "party dress", "maxi dress"
+        ]
     },
 
     "handbags": {
@@ -32,7 +41,24 @@ CATEGORIES = {
             "Explore our collection of beautiful and "
             "elegant handbags."
         ),
-        "folder": "handbags"
+        "folder": "handbags",
+        "keywords": [
+            "handbag", "handbags", "purse", "purses",
+            "ladies bag", "fashion bag"
+        ]
+    },
+
+    "crossbody_bags": {
+        "title": "Beautiful Crossbody Bags",
+        "description": (
+            "Discover stylish crossbody bags designed "
+            "for elegance, comfort and everyday fashion."
+        ),
+        "folder": "crossbody_bags",
+        "keywords": [
+            "crossbody", "crossbody bag", "crossbody bags",
+            "shoulder bag", "sling bag", "small bag"
+        ]
     },
 
     "necklaces": {
@@ -41,7 +67,11 @@ CATEGORIES = {
             "Discover beautiful necklaces and elegant "
             "jewellery that add luxury to every outfit."
         ),
-        "folder": "necklaces"
+        "folder": "necklaces",
+        "keywords": [
+            "necklace", "necklaces", "jewellery",
+            "jewelry", "pendant", "chains", "earrings"
+        ]
     },
 
     "shoes": {
@@ -50,7 +80,12 @@ CATEGORIES = {
             "Discover elegant heels, sneakers, canvas shoes "
             "and fashionable footwear for every occasion."
         ),
-        "folder": "shoes"
+        "folder": "shoes",
+        "keywords": [
+            "shoe", "shoes", "sneakers", "sneaker",
+            "canvas", "canvas shoes", "nike", "adidas",
+            "boots", "footwear", "trainers"
+        ]
     },
 
     "hair": {
@@ -60,7 +95,12 @@ CATEGORIES = {
             "frontal wigs, closure wigs and luxurious "
             "human hair collections."
         ),
-        "folder": "hair"
+        "folder": "hair",
+        "keywords": [
+            "hair", "wig", "wigs", "human hair",
+            "bone straight", "pixie curls", "frontal",
+            "closure", "weavon", "weave"
+        ]
     },
 
     "watches": {
@@ -69,7 +109,11 @@ CATEGORIES = {
             "Explore our collection of elegant and stylish "
             "wristwatches for every occasion."
         ),
-        "folder": "watches"
+        "folder": "watches",
+        "keywords": [
+            "watch", "watches", "wristwatch",
+            "wristwatches", "timepiece"
+        ]
     },
 
     "heels": {
@@ -78,7 +122,11 @@ CATEGORIES = {
             "Discover elegant heels for special occasions, "
             "parties, celebrations and everyday style."
         ),
-        "folder": "heels"
+        "folder": "heels",
+        "keywords": [
+            "heel", "heels", "high heels",
+            "stilettos", "women heels"
+        ]
     }
 }
 
@@ -132,6 +180,43 @@ def show_category(category_name):
     )
 
 
+# SEARCH ENGINE
+def search_categories(search_query):
+
+    query = search_query.casefold().strip()
+
+    matching_categories = []
+
+    if not query:
+        return matching_categories
+
+    for category_name, category in CATEGORIES.items():
+
+        searchable_words = (
+            category["title"].casefold().split()
+            + category["description"].casefold().split()
+            + category["keywords"]
+        )
+
+        for keyword in searchable_words:
+
+            if keyword in query or query in keyword:
+
+                images = get_category_images(category["folder"])
+
+                matching_categories.append({
+                    "name": category_name,
+                    "title": category["title"],
+                    "description": category["description"],
+                    "folder": category["folder"],
+                    "image": images[0] if images else None
+                })
+
+                break
+
+    return matching_categories
+
+
 # HOMEPAGE
 @app.route("/")
 def home():
@@ -140,13 +225,15 @@ def home():
     hair_images = get_category_images("hair")
     watches_images = get_category_images("watches")
     heels_images = get_category_images("heels")
+    crossbody_images = get_category_images("crossbody_bags")
 
     return render_template(
         "home.html",
         shoes_images=shoes_images,
         hair_images=hair_images,
         watches_images=watches_images,
-        heels_images=heels_images
+        heels_images=heels_images,
+        crossbody_images=crossbody_images
     )
 
 
@@ -174,6 +261,36 @@ def store():
     )
 
 
+# CUSTOMER SEARCH
+@app.route("/search")
+def search():
+
+    search_query = request.args.get("q", "").strip()
+
+    results = search_categories(search_query)
+
+    if not search_query:
+        message = "Please enter a fashion product to search."
+
+    elif results:
+        message = ""
+
+    else:
+        message = (
+            "We couldn't find a matching fashion category. "
+            "Grace Luxury specialises in fashion, including "
+            "clothing, gowns, shoes, bags, jewellery and hair. "
+            "Please try another fashion search."
+        )
+
+    return render_template(
+        "search_results.html",
+        query=search_query,
+        results=results,
+        message=message
+    )
+
+
 # CLOTHING
 @app.route("/clothing")
 def clothing():
@@ -190,6 +307,12 @@ def gowns():
 @app.route("/handbags")
 def handbags():
     return show_category("handbags")
+
+
+# CROSSBODY BAGS
+@app.route("/crossbody-bags")
+def crossbody_bags():
+    return show_category("crossbody_bags")
 
 
 # NECKLACES AND JEWELLERY

@@ -27,6 +27,36 @@
     </header>
 
 
+    <!-- SHOP SEARCH BAR -->
+    <section style="padding: 25px 15px; background: #f9f3f5; text-align: center;">
+
+        <h2 style="margin-bottom: 15px;">
+            Find Your Favourite Fashion Items
+        </h2>
+
+        <form action="{{ url_for('search') }}" method="GET"
+              style="display: flex; justify-content: center; max-width: 650px; margin: auto; gap: 10px;">
+
+            <input
+                type="search"
+                name="q"
+                placeholder="Search gowns, shoes, handbags, wigs..."
+                required
+                style="flex: 1; min-width: 0; padding: 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px;"
+            >
+
+            <button
+                type="submit"
+                style="padding: 14px 22px; background: #8b2942; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;"
+            >
+                Search
+            </button>
+
+        </form>
+
+    </section>
+
+
     <!-- ALL PRODUCTS SECTION -->
     <section class="fashion-section">
 

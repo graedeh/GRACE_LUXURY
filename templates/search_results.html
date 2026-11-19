@@ -1,0 +1,127 @@
+\<!DOCTYPE html>
+
+\<html lang="en">
+
+\<head>     \<meta charset="UTF-8">     \<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Search Results | Grace Luxury</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+```
+
+\</head>
+
+\<body>
+
+```
+<!-- HEADER -->
+<header class="main-header">
+
+    <h1 class="logo">GRACE LUXURY</h1>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/store">Shop</a>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+    </nav>
+
+</header>
+
+
+<!-- SEARCH RESULTS -->
+<section class="fashion-section">
+
+    <h2>Search Results</h2>
+
+    <p class="section-description">
+        You searched for: <strong>{{ query }}</strong>
+    </p>
+
+
+    <!-- FRIENDLY MESSAGE -->
+    {% if message %}
+
+        <div class="search-message">
+            {{ message }}
+        </div>
+
+    {% endif %}
+
+
+    <!-- MATCHING CATEGORIES -->
+    {% if results %}
+
+        <div class="fashion-container">
+
+            {% for category in results %}
+
+                <div class="fashion-card">
+
+                    <a href="{{ url_for('category_page', category_name=category.name) }}">
+
+                        {% if category.image %}
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='images/' ~ category.folder ~ '/' ~ category.image
+                                ) }}"
+                                alt="{{ category.title }}"
+                            >
+
+                        {% else %}
+
+                            <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
+                                {{ category.title }}
+                            </div>
+
+                        {% endif %}
+
+                    </a>
+
+                    <h3>{{ category.title }}</h3>
+
+                    <p>{{ category.description }}</p>
+
+                    <a href="{{ url_for('category_page', category_name=category.name) }}">
+                        Explore Collection
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- BACK TO SHOP -->
+    <div style="text-align: center; margin-top: 30px;">
+
+        <a href="/store" class="shop-button">
+            Back to Shop
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer class="main-footer">
+
+    <h3>GRACE LUXURY</h3>
+
+    <p>Beauty, Elegance and Fashion in One Place.</p>
+
+    <p>&copy; 2026 Grace Luxury. All Rights Reserved.</p>
+
+</footer>
+```
+
+\</body>
+
+\</html>

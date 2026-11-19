@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Grace Luxury | Fashion & Lifestyle</title>
+    <title>Grace Luxury | Home</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <!-- HEADER AND NAVIGATION -->
+    <!-- HEADER -->
     <header class="main-header">
 
         <h1 class="logo">GRACE LUXURY</h1>
@@ -27,7 +27,7 @@
     </header>
 
 
-    <!-- WELCOME SECTION -->
+    <!-- HERO SECTION -->
     <section class="hero">
 
         <div class="hero-content">
@@ -35,8 +35,8 @@
             <h2 class="typing-text">Welcome to Grace Luxury</h2>
 
             <p>
-                Discover elegance, beauty and confidence.
-                Everything fashionable, all in one place.
+                Discover elegance, beauty, and fashion.
+                Find beautiful fashion pieces that make you stand out.
             </p>
 
             <a href="/store" class="shop-button">Shop Now</a>
@@ -51,17 +51,18 @@
 
         <h2>Explore Our Collections</h2>
 
-        <p class="section-description">
-            Discover beautiful fashion collections selected just for you.
-        </p>
-
         <div class="fashion-container">
+
 
             <!-- CLOTHING -->
             <div class="fashion-card">
 
-                <img src="{{ url_for('static', filename='images/clothings.jpg') }}"
-                     alt="Modern Women's Clothing">
+                <a href="/store">
+                    <img
+                        src="{{ url_for('static', filename='images/clothings.jpg') }}"
+                        alt="Modern Women's Clothing"
+                    >
+                </a>
 
                 <h3>Clothing</h3>
 
@@ -73,12 +74,50 @@
             <!-- GOWNS -->
             <div class="fashion-card">
 
-                <img src="{{ url_for('static', filename='images/gown4.jpg') }}"
-                     alt="Elegant Women's Gowns">
+                <a href="/gowns">
+                    <img
+                        src="{{ url_for('static', filename='images/gown4.jpg') }}"
+                        alt="Elegant Women's Gowns"
+                    >
+                </a>
 
                 <h3>Gowns</h3>
 
                 <a href="/gowns">Explore Collection</a>
+
+            </div>
+
+
+            <!-- NECKLACES AND JEWELLERY -->
+            <div class="fashion-card">
+
+                <a href="/necklaces">
+                    <img
+                        src="{{ url_for('static', filename='images/necklace.jpeg') }}"
+                        alt="Beautiful Necklaces and Jewellery"
+                    >
+                </a>
+
+                <h3>Necklaces & Jewellery</h3>
+
+                <a href="/necklaces">Explore Collection</a>
+
+            </div>
+
+
+            <!-- HANDBAGS -->
+            <div class="fashion-card">
+
+                <a href="/handbags">
+                    <img
+                        src="{{ url_for('static', filename='images/handbags/hangbag1.jpeg') }}"
+                        alt="Beautiful Handbags"
+                    >
+                </a>
+
+                <h3>Handbags</h3>
+
+                <a href="/handbags">Explore Collection</a>
 
             </div>
 

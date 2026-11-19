@@ -1,67 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Our Collection | Grace Luxury</title>
+    <title>Clothing Collection | Grace Luxury</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <header>
-        <h1>Grace Luxury</h1>
-        <p>Explore Our Collection</p>
+    <header class="main-header">
+        <h1 class="logo">GRACE LUXURY</h1>
 
         <nav>
             <a href="/">Home</a>
+            <a href="/store">Shop</a>
             <a href="/register">Register</a>
             <a href="/login">Login</a>
         </nav>
     </header>
 
-    <main>
+    <section class="fashion-section">
 
-        <h2>Our Products</h2>
+        <h2>Our Clothing Collection</h2>
 
-        <div class="products-container">
+        <p class="section-description">
+            Explore stylish clothing designed to bring out your elegance.
+        </p>
 
-            <div class="product">
-                <h3>Elegant Dress</h3>
-                <p>Beautiful dress for every occasion.</p>
-                <p class="price">₦25,000</p>
-                <a href="/register" class="order-button">Order Now</a>
-            </div>
+        <div class="fashion-container">
 
-            <div class="product">
-                <h3>Luxury Necklace</h3>
-                <p>Elegant jewelry to complement your style.</p>
-                <p class="price">₦15,000</p>
-                <a href="/register" class="order-button">Order Now</a>
-            </div>
-
-            <div class="product">
-                <h3>Classic Shoes</h3>
-                <p>Comfortable and stylish footwear.</p>
-                <p class="price">₦35,000</p>
-                <a href="/register" class="order-button">Order Now</a>
-            </div>
-
-            <div class="product">
-                <h3>Luxury Handbag</h3>
-                <p>A beautiful handbag for your everyday look.</p>
-                <p class="price">₦20,000</p>
-                <a href="/register" class="order-button">Order Now</a>
+            <div class="fashion-card">
+                <img src="{{ url_for('static', filename='images/clothings.jpg') }}" alt="Clothing Collection">
+                <h3>Clothing Collection</h3>
             </div>
 
         </div>
 
-    </main>
+    </section>
 
-    <footer>
-        <p>&copy; 2026 Grace Luxury. All rights reserved.</p>
+    <footer class="main-footer">
+        <h3>GRACE LUXURY</h3>
+        <p>Beauty, Elegance and Fashion in One Place.</p>
+        <p>&copy; 2026 Grace Luxury. All Rights Reserved.</p>
     </footer>
 
 </body>

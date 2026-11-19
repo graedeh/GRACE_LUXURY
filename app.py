@@ -22,12 +22,25 @@ def register():
 def login():
     return render_template("login.html")
 
+
 @app.route("/forgotten_password")
 def forgotten_password():
     return render_template("forgotten.html")
 
+
 @app.route("/gowns")
 def gowns():
     return render_template("gowns.html")
+
+
+@app.route("/handbags")
+def handbags():
+    return render_template("handbags.html")
+
+@app.route("/necklaces")
+def necklaces():
+    return render_template("necklaces.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True)

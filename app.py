@@ -6,7 +6,7 @@ from flask import Flask, render_template, abort
 app = Flask(__name__)
 
 
-# All product categories and their image folders
+# ALL PRODUCT CATEGORIES
 CATEGORIES = {
     "clothing": {
         "title": "Our Clothing Collection",
@@ -42,11 +42,39 @@ CATEGORIES = {
             "jewellery that add luxury to every outfit."
         ),
         "folder": "necklaces"
+    },
+
+    "shoes": {
+        "title": "Beautiful Shoes",
+        "description": (
+            "Discover elegant heels, sneakers, canvas shoes "
+            "and fashionable footwear for every occasion."
+        ),
+        "folder": "shoes"
+    },
+
+    "hair": {
+        "title": "Wigs & Human Hair",
+        "description": (
+            "Discover beautiful bone straight, pixie curls, "
+            "frontal wigs, closure wigs and luxurious "
+            "human hair collections."
+        ),
+        "folder": "hair"
+    },
+
+    "watches": {
+        "title": "Elegant Wristwatches",
+        "description": (
+            "Explore our collection of elegant and stylish "
+            "wristwatches for every occasion."
+        ),
+        "folder": "watches"
     }
 }
 
 
-# Image formats the website can display
+# ALLOWED IMAGE FORMATS
 ALLOWED_IMAGE_EXTENSIONS = {
     ".jpg",
     ".jpeg",
@@ -57,7 +85,7 @@ ALLOWED_IMAGE_EXTENSIONS = {
 }
 
 
-# Read all images inside a category folder
+# AUTOMATICALLY LOAD CATEGORY IMAGES
 def get_category_images(folder):
 
     image_folder = Path(app.static_folder) / "images" / folder
@@ -78,7 +106,7 @@ def get_category_images(folder):
     return sorted(images, key=str.casefold)
 
 
-# Reusable function for displaying category pages
+# REUSABLE CATEGORY PAGE
 def show_category(category_name):
 
     category = CATEGORIES.get(category_name)
@@ -98,31 +126,59 @@ def show_category(category_name):
 # HOMEPAGE
 @app.route("/")
 def home():
-    return render_template("home.html")
+
+    shoes_images = get_category_images("shoes")
+    hair_images = get_category_images("hair")
+    watches_images = get_category_images("watches")
+
+    return render_template(
+        "home.html",
+        shoes_images=shoes_images,
+        hair_images=hair_images,
+        watches_images=watches_images
+    )
 
 
-# CLOTHING COLLECTION
+# CLOTHING
 @app.route("/store")
 def store():
     return show_category("clothing")
 
 
-# GOWNS COLLECTION
+# GOWNS
 @app.route("/gowns")
 def gowns():
     return show_category("gowns")
 
 
-# HANDBAGS COLLECTION
+# HANDBAGS
 @app.route("/handbags")
 def handbags():
     return show_category("handbags")
 
 
-# NECKLACES AND JEWELLERY COLLECTION
+# NECKLACES AND JEWELLERY
 @app.route("/necklaces")
 def necklaces():
     return show_category("necklaces")
+
+
+# SHOES
+@app.route("/shoes")
+def shoes():
+    return show_category("shoes")
+
+
+# WIGS AND HUMAN HAIR
+@app.route("/hair")
+def hair():
+    return show_category("hair")
+
+
+# WRISTWATCHES
+@app.route("/watches")
+def watches():
+    return show_category("watches")
 
 
 # FUTURE CATEGORY PAGES

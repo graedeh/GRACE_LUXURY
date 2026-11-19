@@ -88,7 +88,7 @@
             </div>
 
 
-            <!-- NECKLACES AND JEWELLERY -->
+            <!-- NECKLACES -->
             <div class="fashion-card">
 
                 <a href="/necklaces">
@@ -118,6 +118,93 @@
                 <h3>Handbags</h3>
 
                 <a href="/handbags">Explore Collection</a>
+
+            </div>
+
+
+            <!-- SHOES -->
+            <div class="fashion-card">
+
+                <a href="/shoes">
+
+                    {% if shoes_images %}
+
+                        <img
+                            src="{{ url_for('static', filename='images/shoes/' ~ shoes_images[0]) }}"
+                            alt="Beautiful Shoes"
+                        >
+
+                    {% else %}
+
+                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
+                            Shoes Collection
+                        </div>
+
+                    {% endif %}
+
+                </a>
+
+                <h3>Shoes</h3>
+
+                <a href="/shoes">Explore Collection</a>
+
+            </div>
+
+
+            <!-- WIGS AND HUMAN HAIR -->
+            <div class="fashion-card">
+
+                <a href="/hair">
+
+                    {% if hair_images %}
+
+                        <img
+                            src="{{ url_for('static', filename='images/hair/' ~ hair_images[0]) }}"
+                            alt="Beautiful Wigs and Human Hair"
+                        >
+
+                    {% else %}
+
+                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
+                            Hair Collection
+                        </div>
+
+                    {% endif %}
+
+                </a>
+
+                <h3>Wigs & Human Hair</h3>
+
+                <a href="/hair">Explore Collection</a>
+
+            </div>
+
+
+            <!-- WRISTWATCHES -->
+            <div class="fashion-card">
+
+                <a href="/watches">
+
+                    {% if watches_images %}
+
+                        <img
+                            src="{{ url_for('static', filename='images/watches/' ~ watches_images[0]) }}"
+                            alt="Elegant Wristwatches"
+                        >
+
+                    {% else %}
+
+                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
+                            Wristwatches Collection
+                        </div>
+
+                    {% endif %}
+
+                </a>
+
+                <h3>Wristwatches</h3>
+
+                <a href="/watches">Explore Collection</a>
 
             </div>
 

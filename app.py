@@ -150,9 +150,33 @@ def home():
     )
 
 
-# CLOTHING
+# ALL PRODUCTS / SHOP PAGE
 @app.route("/store")
 def store():
+
+    category_cards = []
+
+    for category_name, category in CATEGORIES.items():
+
+        images = get_category_images(category["folder"])
+
+        category_cards.append({
+            "name": category_name,
+            "title": category["title"],
+            "description": category["description"],
+            "folder": category["folder"],
+            "image": images[0] if images else None
+        })
+
+    return render_template(
+        "store.html",
+        categories=category_cards
+    )
+
+
+# CLOTHING
+@app.route("/clothing")
+def clothing():
     return show_category("clothing")
 
 

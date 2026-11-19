@@ -1,11 +1,11 @@
 import os
+import uuid
 from pathlib import Path
 from functools import wraps
 
 from flask import (
     Flask,
     render_template,
-    render_template_string,
     abort,
     request,
     redirect,
@@ -15,9 +15,11 @@ from flask import (
 )
 
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 
 from database import (
     create_tables,
+    add_product,
     get_all_products,
     get_products_by_category,
     get_product_by_id,
@@ -27,7 +29,10 @@ from database import (
 
 app = Flask(__name__)
 
+# =====================================================
 # SECURITY CONFIGURATION
+# =====================================================
+
 app.secret_key = os.environ.get("FLASK_SECRET_KEY")
 
 if not app.secret_key:
@@ -37,13 +42,15 @@ if not app.secret_key:
 
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
-
-# ENSURE DATABASE TABLES EXIST
 create_tables()
 
 
+# =====================================================
 # ADMIN LOGIN PROTECTION
+# =====================================================
+
 def admin_required(view_function):
 
     @wraps(view_function)
@@ -58,7 +65,10 @@ def admin_required(view_function):
     return decorated_function
 
 
-# ALL PRODUCT CATEGORIES
+# =====================================================
+# PRODUCT CATEGORIES
+# =====================================================
+
 CATEGORIES = {
     "clothing": {
         "title": "Our Clothing Collection",
@@ -183,7 +193,10 @@ CATEGORIES = {
 }
 
 
-# ALLOWED IMAGE FORMATS
+# =====================================================
+# IMAGE CONFIGURATION
+# =====================================================
+
 ALLOWED_IMAGE_EXTENSIONS = {
     ".jpg",
     ".jpeg",
@@ -194,7 +207,15 @@ ALLOWED_IMAGE_EXTENSIONS = {
 }
 
 
+def allowed_image(filename):
+
+    return Path(filename).suffix.lower() in ALLOWED_IMAGE_EXTENSIONS
+
+
+# =====================================================
 # AUTOMATICALLY LOAD CATEGORY IMAGES
+# =====================================================
+
 def get_category_images(folder):
 
     image_folder = Path(app.static_folder) / "images" / folder
@@ -215,7 +236,10 @@ def get_category_images(folder):
     return sorted(images, key=str.casefold)
 
 
+# =====================================================
 # REUSABLE CATEGORY PAGE
+# =====================================================
+
 def show_category(category_name):
 
     category = CATEGORIES.get(category_name)
@@ -234,7 +258,10 @@ def show_category(category_name):
     )
 
 
+# =====================================================
 # SEARCH ENGINE
+# =====================================================
+
 def search_categories(search_query):
 
     query = search_query.casefold().strip()
@@ -270,7 +297,10 @@ def search_categories(search_query):
     return matching_categories
 
 
+# =====================================================
 # HOMEPAGE
+# =====================================================
+
 @app.route("/")
 def home():
 
@@ -290,7 +320,10 @@ def home():
     )
 
 
+# =====================================================
 # SHOP PAGE
+# =====================================================
+
 @app.route("/store")
 def store():
 
@@ -317,7 +350,10 @@ def store():
     )
 
 
+# =====================================================
 # CUSTOMER SEARCH
+# =====================================================
+
 @app.route("/search")
 def search():
 
@@ -346,7 +382,10 @@ def search():
     )
 
 
+# =====================================================
 # INDIVIDUAL PRODUCT DETAILS
+# =====================================================
+
 @app.route("/product/<int:product_id>")
 def product_detail(product_id):
 
@@ -395,44 +434,143 @@ def admin_login():
     return render_template("admin_login.html")
 
 
+# =====================================================
 # ADMIN DASHBOARD
+# =====================================================
+
 @app.route("/admin/dashboard")
 @admin_required
 def admin_dashboard():
 
-    return render_template_string("""
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport"
-                  content="width=device-width, initial-scale=1.0">
-            <title>Admin Dashboard | Grace Luxury</title>
-        </head>
+    products = get_all_products()
 
-        <body style="font-family: Arial; background: #fffaf5;
-                     padding: 40px;">
-
-            <h1 style="color: #3b1f2b;">
-                GRACE LUXURY ADMIN DASHBOARD
-            </h1>
-
-            <h2>Welcome, {{ admin_name }}!</h2>
-
-            <p>You are successfully logged in as an administrator.</p>
-
-            <a href="{{ url_for('admin_logout') }}"
-               style="background: #3b1f2b; color: white;
-                      padding: 12px 20px; text-decoration: none;">
-                Logout
-            </a>
-
-        </body>
-        </html>
-    """, admin_name=session.get("admin_name", "Administrator"))
+    return render_template(
+        "admin_dashboard.html",
+        products=products,
+        categories=CATEGORIES,
+        admin_name=session.get("admin_name", "Administrator")
+    )
 
 
+# =====================================================
+# ADD NEW PRODUCT
+# =====================================================
+
+@app.route("/admin/products/add", methods=["POST"])
+@admin_required
+def admin_add_product():
+
+    name = request.form.get("name", "").strip()
+    description = request.form.get("description", "").strip()
+    category_name = request.form.get("category", "").strip()
+
+    price_input = request.form.get("price", "").strip()
+    stock_input = request.form.get("stock_quantity", "").strip()
+
+    image = request.files.get("image")
+
+    # CHECK REQUIRED FIELDS
+
+    if not all([
+        name,
+        description,
+        category_name,
+        price_input,
+        stock_input
+    ]):
+        flash("Please complete all product fields.", "error")
+        return redirect(url_for("admin_dashboard"))
+
+    # CHECK CATEGORY
+
+    if category_name not in CATEGORIES:
+        flash("Please select a valid product category.", "error")
+        return redirect(url_for("admin_dashboard"))
+
+    # CHECK PRICE AND STOCK
+
+    try:
+        price = int(price_input)
+        stock_quantity = int(stock_input)
+
+        if price < 0 or stock_quantity < 0:
+            raise ValueError
+
+    except ValueError:
+        flash(
+            "Price and stock quantity must be valid non-negative numbers.",
+            "error"
+        )
+        return redirect(url_for("admin_dashboard"))
+
+    # CHECK IMAGE
+
+    if not image or not image.filename:
+        flash("Please select a product image.", "error")
+        return redirect(url_for("admin_dashboard"))
+
+    if not allowed_image(image.filename):
+        flash(
+            "Unsupported image format. Use JPG, JPEG, PNG, WEBP, GIF or AVIF.",
+            "error"
+        )
+        return redirect(url_for("admin_dashboard"))
+
+    # PREPARE CATEGORY IMAGE FOLDER
+
+    category_folder = CATEGORIES[category_name]["folder"]
+
+    image_directory = (
+        Path(app.static_folder)
+        / "images"
+        / category_folder
+    )
+
+    image_directory.mkdir(parents=True, exist_ok=True)
+
+    # CREATE A UNIQUE IMAGE NAME
+
+    original_filename = secure_filename(image.filename)
+    extension = Path(original_filename).suffix.lower()
+
+    image_filename = f"{uuid.uuid4().hex}{extension}"
+
+    image_path = image_directory / image_filename
+
+    # SAVE IMAGE AND PRODUCT DETAILS
+
+    try:
+
+        image.save(image_path)
+
+        product_id = add_product(
+            name,
+            description,
+            price,
+            category_name,
+            image_filename,
+            stock_quantity
+        )
+
+    except Exception:
+
+        if image_path.exists():
+            image_path.unlink()
+
+        raise
+
+    flash(
+        f"Product added successfully! Product ID: {product_id}",
+        "success"
+    )
+
+    return redirect(url_for("admin_dashboard"))
+
+
+# =====================================================
 # ADMIN LOGOUT
+# =====================================================
+
 @app.route("/admin/logout")
 @admin_required
 def admin_logout():
@@ -444,7 +582,10 @@ def admin_logout():
     return redirect(url_for("admin_login"))
 
 
+# =====================================================
 # CLOTHING
+# =====================================================
+
 @app.route("/clothing")
 def clothing():
     return show_category("clothing")
@@ -504,7 +645,10 @@ def category_page(category_name):
     return show_category(category_name)
 
 
+# =====================================================
 # CUSTOMER REGISTRATION
+# =====================================================
+
 @app.route("/register")
 def register():
     return render_template("register.html")
@@ -521,6 +665,10 @@ def login():
 def forgotten_password():
     return render_template("forgotten.html")
 
+
+# =====================================================
+# RUN APPLICATION
+# =====================================================
 
 if __name__ == "__main__":
     app.run(debug=True)

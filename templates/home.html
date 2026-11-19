@@ -7,7 +7,32 @@
 
     <title>Grace Luxury | Home</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* ADMIN NAVIGATION BUTTON */
+        .main-header nav a.admin-link {
+            background: #d4af37;
+            color: #3b1f2b;
+            padding: 10px 16px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .main-header nav a.admin-link:hover {
+            background: #fff;
+            color: #3b1f2b;
+        }
+
+        /* COLLECTION IMAGE FALLBACK */
+        .fashion-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -22,6 +47,12 @@
             <a href="/store">Shop</a>
             <a href="/register">Register</a>
             <a href="/login">Login</a>
+
+            <!-- ADMIN LOGIN -->
+            <a href="{{ url_for('admin_login') }}"
+               class="admin-link">
+                Admin
+            </a>
         </nav>
 
     </header>
@@ -34,20 +65,26 @@
             What Are You Looking For?
         </h2>
 
-        <form action="{{ url_for('search') }}" method="GET"
-              style="display: flex; justify-content: center; max-width: 650px; margin: auto; gap: 10px;">
+        <form action="{{ url_for('search') }}"
+              method="GET"
+              style="display: flex; justify-content: center;
+                     max-width: 650px; margin: auto; gap: 10px;">
 
             <input
                 type="search"
                 name="q"
                 placeholder="Search for gowns, shoes, bags, wigs..."
                 required
-                style="flex: 1; min-width: 0; padding: 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px;"
+                style="flex: 1; min-width: 0; padding: 14px;
+                       border: 1px solid #ccc; border-radius: 6px;
+                       font-size: 16px;"
             >
 
             <button
                 type="submit"
-                style="padding: 14px 22px; background: #8b2942; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;"
+                style="padding: 14px 22px; background: #8b2942;
+                       color: white; border: none; border-radius: 6px;
+                       cursor: pointer; font-size: 16px;"
             >
                 Search
             </button>
@@ -69,7 +106,9 @@
                 Find beautiful fashion pieces that make you stand out.
             </p>
 
-            <a href="/store" class="shop-button">Shop Now</a>
+            <a href="/store" class="shop-button">
+                Shop Now
+            </a>
 
         </div>
 
@@ -87,96 +126,18 @@
             <!-- CLOTHING -->
             <div class="fashion-card">
 
-                <a href="/store">
+                <a href="/clothing">
+
                     <img
                         src="{{ url_for('static', filename='images/clothings.jpg') }}"
                         alt="Modern Women's Clothing"
                     >
+
                 </a>
 
                 <h3>Clothing</h3>
 
-                <a href="/store">Explore Collection</a>
-
-            </div>
-
-
-            <!-- GOWNS -->
-            <div class="fashion-card">
-
-                <a href="/gowns">
-                    <img
-                        src="{{ url_for('static', filename='images/gown4.jpg') }}"
-                        alt="Elegant Women's Gowns"
-                    >
-                </a>
-
-                <h3>Gowns</h3>
-
-                <a href="/gowns">Explore Collection</a>
-
-            </div>
-
-
-            <!-- NECKLACES -->
-            <div class="fashion-card">
-
-                <a href="/necklaces">
-                    <img
-                        src="{{ url_for('static', filename='images/necklace.jpeg') }}"
-                        alt="Beautiful Necklaces and Jewellery"
-                    >
-                </a>
-
-                <h3>Necklaces & Jewellery</h3>
-
-                <a href="/necklaces">Explore Collection</a>
-
-            </div>
-
-
-            <!-- HANDBAGS -->
-            <div class="fashion-card">
-
-                <a href="/handbags">
-                    <img
-                        src="{{ url_for('static', filename='images/handbags/hangbag1.jpeg') }}"
-                        alt="Beautiful Handbags"
-                    >
-                </a>
-
-                <h3>Handbags</h3>
-
-                <a href="/handbags">Explore Collection</a>
-
-            </div>
-
-
-            <!-- CROSSBODY BAGS -->
-            <div class="fashion-card">
-
-                <a href="/crossbody-bags">
-
-                    {% if crossbody_images %}
-
-                        <img
-                            src="{{ url_for('static', filename='images/crossbody_bags/' ~ crossbody_images[0]) }}"
-                            alt="Beautiful Crossbody Bags"
-                        >
-
-                    {% else %}
-
-                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
-                            Crossbody Bags Collection
-                        </div>
-
-                    {% endif %}
-
-                </a>
-
-                <h3>Crossbody Bags</h3>
-
-                <a href="/crossbody-bags">Explore Collection</a>
+                <a href="/clothing">Explore Collection</a>
 
             </div>
 
@@ -190,12 +151,12 @@
 
                         <img
                             src="{{ url_for('static', filename='images/shoes/' ~ shoes_images[0]) }}"
-                            alt="Beautiful Shoes"
+                            alt="Fashionable Shoes"
                         >
 
                     {% else %}
 
-                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
+                        <div style="padding: 100px 10px;">
                             Shoes Collection
                         </div>
 
@@ -219,12 +180,12 @@
 
                         <img
                             src="{{ url_for('static', filename='images/hair/' ~ hair_images[0]) }}"
-                            alt="Beautiful Wigs and Human Hair"
+                            alt="Wigs and Human Hair"
                         >
 
                     {% else %}
 
-                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
+                        <div style="padding: 100px 10px;">
                             Hair Collection
                         </div>
 
@@ -253,8 +214,8 @@
 
                     {% else %}
 
-                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
-                            Wristwatches Collection
+                        <div style="padding: 100px 10px;">
+                            Watches Collection
                         </div>
 
                     {% endif %}
@@ -277,12 +238,12 @@
 
                         <img
                             src="{{ url_for('static', filename='images/heels/' ~ heels_images[0]) }}"
-                            alt="Beautiful Women's Heels"
+                            alt="Beautiful Heels"
                         >
 
                     {% else %}
 
-                        <div style="height: 280px; display: flex; justify-content: center; align-items: center; background: #f3e9ec;">
+                        <div style="padding: 100px 10px;">
                             Heels Collection
                         </div>
 
@@ -297,20 +258,45 @@
             </div>
 
 
+            <!-- CROSSBODY BAGS -->
+            <div class="fashion-card">
+
+                <a href="/crossbody-bags">
+
+                    {% if crossbody_images %}
+
+                        <img
+                            src="{{ url_for('static', filename='images/crossbody_bags/' ~ crossbody_images[0]) }}"
+                            alt="Beautiful Crossbody Bags"
+                        >
+
+                    {% else %}
+
+                        <div style="padding: 100px 10px;">
+                            Crossbody Bags Collection
+                        </div>
+
+                    {% endif %}
+
+                </a>
+
+                <h3>Crossbody Bags</h3>
+
+                <a href="/crossbody-bags">Explore Collection</a>
+
+            </div>
+
+
         </div>
 
     </section>
 
 
     <!-- FOOTER -->
-    <footer class="main-footer">
-
-        <h3>GRACE LUXURY</h3>
-
-        <p>Beauty, Elegance and Fashion in One Place.</p>
-
-        <p>&copy; 2026 Grace Luxury. All Rights Reserved.</p>
-
+    <footer>
+        <p>
+            &copy; 2026 Grace Luxury. All Rights Reserved.
+        </p>
     </footer>
 
 </body>

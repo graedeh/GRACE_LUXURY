@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ category.title }} | Grace Luxury</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="main-header">
+
+        <h1 class="logo">GRACE LUXURY</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/store">Shop</a>
+            <a href="/register">Register</a>
+            <a href="/login">Login</a>
+        </nav>
+
+    </header>
+
+
+    <!-- CATEGORY COLLECTION -->
+    <section class="fashion-section">
+
+        <h2>{{ category.title }}</h2>
+
+        <p class="section-description">
+            {{ category.description }}
+        </p>
+
+
+        <!-- PRODUCT IMAGES -->
+        <div class="fashion-container">
+
+            {% for image in images %}
+
+                <div class="fashion-card">
+
+                    <img
+                        src="{{ url_for('static', filename='images/' ~ category.folder ~ '/' ~ image) }}"
+                        alt="{{ image }}"
+                    >
+
+                    <h3>
+                        {{ image.rsplit('.', 1)[0]
+                            .replace('_', ' ')
+                            .replace('-', ' ')
+                            .title() }}
+                    </h3>
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    No products have been added to this collection yet.
+                    Please check back soon!
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+
+        <h3>GRACE LUXURY</h3>
+
+        <p>Beauty, Elegance and Fashion in One Place.</p>
+
+        <p>&copy; 2026 Grace Luxury. All Rights Reserved.</p>
+
+    </footer>
+
+</body>
+
+</html>

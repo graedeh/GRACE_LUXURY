@@ -3,9 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Admin Dashboard | Grace Luxury</title>
 
@@ -55,7 +53,7 @@
 
         .container {
             width: 90%;
-            max-width: 1250px;
+            max-width: 1400px;
             margin: 35px auto;
         }
 
@@ -189,7 +187,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 650px;
+            min-width: 1100px;
         }
 
         th, td {
@@ -210,6 +208,66 @@
             border-radius: 5px;
         }
 
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.active {
+            background: #dff5e4;
+            color: #17632b;
+        }
+
+        .status.hidden {
+            background: #ffe1e1;
+            color: #9b1717;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            display: inline-block;
+            padding: 9px 12px;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .edit-button {
+            background: #3498db;
+            color: white;
+        }
+
+        .hide-button {
+            background: #f39c12;
+            color: white;
+        }
+
+        .show-button {
+            background: #27ae60;
+            color: white;
+        }
+
+        .delete-button {
+            background: #c0392b;
+            color: white;
+        }
+
+        .action-button:hover {
+            opacity: 0.85;
+        }
+
         .empty-message {
             text-align: center;
             padding: 30px;
@@ -226,6 +284,22 @@
 
         footer span {
             color: #d4af37;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 95%;
+            }
+
+            .section {
+                padding: 18px;
+            }
+
+            .header h1 {
+                font-size: 21px;
+            }
+
         }
 
     </style>
@@ -291,7 +365,19 @@
 
                 <h3>Active Products</h3>
 
-                <p>{{ products|length }}</p>
+                <p>
+                    {{ products|selectattr('is_active', 'equalto', 1)|list|length }}
+                </p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Hidden Products</h3>
+
+                <p>
+                    {{ products|selectattr('is_active', 'equalto', 0)|list|length }}
+                </p>
 
             </div>
 
@@ -300,6 +386,14 @@
                 <h3>Product Categories</h3>
 
                 <p>{{ categories|length }}</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Total Products</h3>
+
+                <p>{{ products|length }}</p>
 
             </div>
 
@@ -460,7 +554,7 @@
 
         <section class="section">
 
-            <h2>Our Products</h2>
+            <h2>Manage Our Products</h2>
 
             {% if products %}
 
@@ -476,6 +570,8 @@
                                 <th>Category</th>
                                 <th>Price</th>
                                 <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
 
                         </thead>
@@ -487,13 +583,15 @@
 
                                 <tr>
 
+                                    <!-- PRODUCT IMAGE -->
+
                                     <td>
 
                                         <img
                                             src="{{ url_for(
                                                 'static',
                                                 filename='images/'
-                                                ~ product['category']
+                                                ~ categories[product['category']]['folder']
                                                 ~ '/'
                                                 ~ product['image_filename']
                                             ) }}"
@@ -502,20 +600,122 @@
 
                                     </td>
 
+
+                                    <!-- PRODUCT NAME -->
+
                                     <td>
                                         {{ product['name'] }}
                                     </td>
 
+
+                                    <!-- CATEGORY -->
+
                                     <td>
-                                        {{ product['category'].replace('_', ' ').title() }}
+                                        {{ categories[product['category']]['title'] }}
                                     </td>
+
+
+                                    <!-- PRICE -->
 
                                     <td>
                                         ₦{{ "{:,.0f}".format(product['price']) }}
                                     </td>
 
+
+                                    <!-- STOCK -->
+
                                     <td>
                                         {{ product['stock_quantity'] }}
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if product['is_active'] %}
+
+                                            <span class="status active">
+                                                Active
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status hidden">
+                                                Hidden
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <td>
+
+                                        <div class="actions">
+
+                                            <!-- EDIT -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'admin_edit_product',
+                                                    product_id=product['id']
+                                                ) }}"
+                                                class="action-button edit-button"
+                                            >
+                                                Edit
+                                            </a>
+
+
+                                            <!-- HIDE OR SHOW -->
+
+                                            <form
+                                                action="{{ url_for(
+                                                    'admin_toggle_product',
+                                                    product_id=product['id']
+                                                ) }}"
+                                                method="POST"
+                                            >
+
+                                                {% if product['is_active'] %}
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-button hide-button"
+                                                    >
+                                                        Hide
+                                                    </button>
+
+                                                {% else %}
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-button show-button"
+                                                    >
+                                                        Show
+                                                    </button>
+
+                                                {% endif %}
+
+                                            </form>
+
+
+                                            <!-- DELETE -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'admin_delete_product',
+                                                    product_id=product['id']
+                                                ) }}"
+                                                class="action-button delete-button"
+                                            >
+                                                Delete
+                                            </a>
+
+                                        </div>
+
                                     </td>
 
                                 </tr>
@@ -546,6 +746,8 @@
 
     </main>
 
+
+    <!-- FOOTER -->
 
     <footer>
 

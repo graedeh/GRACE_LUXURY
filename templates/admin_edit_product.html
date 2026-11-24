@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Product | Grace Luxury</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf5;
+            color: #333;
+        }
+
+        header {
+            background: #3b1f2b;
+            color: white;
+            padding: 22px 5%;
+        }
+
+        header h1 {
+            color: #d4af37;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 750px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #3b1f2b;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #3b1f2b;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .current-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        button, .cancel {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        button {
+            background: #3b1f2b;
+            color: white;
+        }
+
+        .cancel {
+            background: #eee;
+            color: #333;
+        }
+
+        .flash-message {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background: #ffe1e1;
+            color: #9b1717;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>GRACE LUXURY</h1>
+    <p>Administrator Control Panel</p>
+</header>
+
+<main class="container">
+
+    <h2>Edit Product</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="flash-message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <form
+        action="{{ url_for('admin_edit_product', product_id=product['id']) }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <div class="form-group">
+            <label for="name">Product Name</label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                value="{{ product['name'] }}"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="category">Product Category</label>
+
+            <select id="category" name="category" required>
+
+                {% for category_name, category in categories.items() %}
+
+                    <option
+                        value="{{ category_name }}"
+                        {% if product['category'] == category_name %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ category.title }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price (₦)</label>
+
+            <input
+                type="number"
+                id="price"
+                name="price"
+                min="0"
+                step="1"
+                value="{{ product['price'] }}"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="stock_quantity">Available Stock</label>
+
+            <input
+                type="number"
+                id="stock_quantity"
+                name="stock_quantity"
+                min="0"
+                value="{{ product['stock_quantity'] }}"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="description">Product Description</label>
+
+            <textarea
+                id="description"
+                name="description"
+                required
+            >{{ product['description'] }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Current Product Image</label>
+            <br>
+
+            <img
+                class="current-image"
+                src="{{ url_for(
+                    'static',
+                    filename='images/'
+                    ~ categories[product['category']]['folder']
+                    ~ '/'
+                    ~ product['image_filename']
+                ) }}"
+                alt="{{ product['name'] }}"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="image">Upload a New Image (Optional)</label>
+
+            <input
+                type="file"
+                id="image"
+                name="image"
+                accept=".jpg,.jpeg,.png,.webp,.gif,.avif"
+            >
+
+            <small>
+                Leave this empty if you want to keep the current image.
+            </small>
+        </div>
+
+        <div class="buttons">
+
+            <button type="submit">
+                Save Changes
+            </button>
+
+            <a
+                href="{{ url_for('admin_dashboard') }}"
+                class="cancel"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</main>
+
+</body>
+</html>

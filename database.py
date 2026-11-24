@@ -306,6 +306,22 @@ def deactivate_product(product_id):
     return update_product(product_id, is_active=0)
 
 
+def delete_product(product_id):
+    connection = get_connection()
+
+    try:
+        cursor = connection.execute("""
+            DELETE FROM products
+            WHERE id = ?
+        """, (product_id,))
+
+        connection.commit()
+        return cursor.rowcount > 0
+
+    finally:
+        connection.close()
+
+
 # =====================================================
 # CUSTOMER FUNCTIONS
 # =====================================================

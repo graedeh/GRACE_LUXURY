@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Product | Grace Luxury</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf5;
+            color: #333;
+        }
+
+        header {
+            background: #3b1f2b;
+            color: white;
+            padding: 22px 5%;
+        }
+
+        header h1 {
+            color: #d4af37;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 70px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #3b1f2b;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .warning {
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        button, a {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        button {
+            background: #c0392b;
+            color: white;
+        }
+
+        .cancel {
+            background: #eee;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>GRACE LUXURY</h1>
+    <p>Administrator Control Panel</p>
+</header>
+
+<main class="container">
+
+    <h2>Delete Product</h2>
+
+    <p>
+        Are you sure you want to permanently delete
+        <strong>{{ product['name'] }}</strong>?
+    </p>
+
+    <p class="warning">
+        This action cannot be undone.
+    </p>
+
+    <div class="buttons">
+
+        <form
+            action="{{ url_for('admin_delete_product', product_id=product['id']) }}"
+            method="POST"
+        >
+
+            <button type="submit">
+                Yes, Delete Product
+            </button>
+
+        </form>
+
+        <a
+            href="{{ url_for('admin_dashboard') }}"
+            class="cancel"
+        >
+            Cancel
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

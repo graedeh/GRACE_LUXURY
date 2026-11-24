@@ -365,9 +365,10 @@ def product_detail(product_id):
         abort(404)
 
     return render_template(
-        "product_detail.html",
-        product=product
-    )
+    "product_detail.html",
+    product=product,
+    categories=CATEGORIES
+)
 
 
 # =====================================================

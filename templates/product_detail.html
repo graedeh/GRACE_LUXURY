@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ product['name'] }} | Grace Luxury</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf5;
+            color: #333;
+        }
+
+        header {
+            background: #3b1f2b;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            color: #d4af37;
+            font-size: 25px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #d4af37;
+        }
+
+        .breadcrumb {
+            width: 90%;
+            max-width: 1200px;
+            margin: 25px auto;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #3b1f2b;
+            text-decoration: none;
+        }
+
+        .product-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto 60px;
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 45px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 480px;
+            object-fit: contain;
+            background: #fffaf5;
+            border-radius: 8px;
+        }
+
+        .product-info {
+            padding: 15px 0;
+        }
+
+        .category {
+            color: #a08025;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .product-info h2 {
+            color: #3b1f2b;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            color: #3b1f2b;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .description-title {
+            color: #3b1f2b;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 25px;
+            white-space: pre-line;
+        }
+
+        .stock {
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .available {
+            color: #198754;
+        }
+
+        .out-of-stock {
+            color: #c0392b;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: #3b1f2b;
+            color: white;
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #56303f;
+        }
+
+        footer {
+            background: #3b1f2b;
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+
+        footer span {
+            color: #d4af37;
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 25px;
+            }
+
+            .product-image {
+                height: 350px;
+            }
+
+            .product-info h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>GRACE LUXURY</h1>
+
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('store') }}">Shop</a>
+            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </nav>
+
+    </header>
+
+
+    <div class="breadcrumb">
+
+        <a href="{{ url_for('home') }}">Home</a>
+        /
+        <a href="{{ url_for('store') }}">Shop</a>
+        /
+        {{ product['name'] }}
+
+    </div>
+
+
+    <main class="product-container">
+
+        <div>
+
+            <img
+                class="product-image"
+                src="{{ url_for(
+                    'static',
+                    filename='images/'
+                    ~ categories[product['category']]['folder']
+                    ~ '/'
+                    ~ product['image_filename']
+                ) }}"
+                alt="{{ product['name'] }}"
+            >
+
+        </div>
+
+
+        <div class="product-info">
+
+            <p class="category">
+                {{ categories[product['category']]['title'] }}
+            </p>
+
+            <h2>
+                {{ product['name'] }}
+            </h2>
+
+            <p class="price">
+                ₦{{ "{:,.0f}".format(product['price']) }}
+            </p>
+
+            <h3 class="description-title">
+                Product Description
+            </h3>
+
+            <p class="description">
+                {{ product['description'] }}
+            </p>
+
+
+            {% if product['stock_quantity'] > 0 %}
+
+                <p class="stock available">
+                    In Stock: {{ product['stock_quantity'] }}
+                </p>
+
+            {% else %}
+
+                <p class="stock out-of-stock">
+                    Currently Out of Stock
+                </p>
+
+            {% endif %}
+
+
+            <a
+                href="{{ url_for('store') }}"
+                class="back-button"
+            >
+                Continue Shopping
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            &copy; 2026 <span>Grace Luxury</span>.
+            All Rights Reserved.
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

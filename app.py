@@ -1,5 +1,6 @@
 import os
 import uuid
+import sqlite3
 from pathlib import Path
 from functools import wraps
 
@@ -14,7 +15,7 @@ from flask import (
     flash
 )
 
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
 from database import (
@@ -24,6 +25,8 @@ from database import (
     get_products_by_category,
     get_product_by_id,
     get_admin_by_email,
+    add_customer,
+    get_customer_by_email,
     update_product,
     delete_product,
     get_connection
@@ -365,10 +368,10 @@ def product_detail(product_id):
         abort(404)
 
     return render_template(
-    "product_detail.html",
-    product=product,
-    categories=CATEGORIES
-)
+        "product_detail.html",
+        product=product,
+        categories=CATEGORIES
+    )
 
 
 # =====================================================
@@ -749,18 +752,115 @@ def category_page(category_name):
 
 
 # =====================================================
-# CUSTOMER REGISTRATION / LOGIN PLACEHOLDERS
+# CUSTOMER REGISTRATION
 # =====================================================
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
+
+    if request.method == "POST":
+
+        full_name = request.form.get("fullname", "").strip()
+        phone = request.form.get("phone", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+
+        if not full_name or not phone or not email or not password:
+            flash("Please fill in all the fields.", "error")
+            return render_template("register.html")
+
+        if len(password) < 8:
+            flash("Your password must be at least 8 characters.", "error")
+            return render_template("register.html")
+
+        existing_customer = get_customer_by_email(email)
+
+        if existing_customer:
+            flash("This email already has an account. Please log in.", "error")
+            return redirect(url_for("login"))
+
+        password_hash = generate_password_hash(password)
+
+        try:
+            customer_id = add_customer(
+                full_name,
+                email,
+                phone,
+                password_hash
+            )
+
+            session["customer_id"] = customer_id
+            session["customer_name"] = full_name
+
+            flash("Your account was created successfully!", "success")
+
+            return redirect(url_for("store"))
+
+        except sqlite3.IntegrityError:
+            flash(
+                "This phone number or email is already registered.",
+                "error"
+            )
+
+            return render_template("register.html")
+
     return render_template("register.html")
 
 
-@app.route("/login")
+# =====================================================
+# CUSTOMER LOGIN
+# =====================================================
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
+
+    if request.method == "POST":
+
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+
+        if not email or not password:
+            flash("Please enter your email and password.", "error")
+            return render_template("login.html")
+
+        customer = get_customer_by_email(email)
+
+        if customer is None:
+            flash("Invalid email or password.", "error")
+            return render_template("login.html")
+
+        if not check_password_hash(customer["password_hash"], password):
+            flash("Invalid email or password.", "error")
+            return render_template("login.html")
+
+        session["customer_id"] = customer["id"]
+        session["customer_name"] = customer["full_name"]
+
+        flash("Welcome back!", "success")
+
+        return redirect(url_for("store"))
+
     return render_template("login.html")
 
+
+# =====================================================
+# CUSTOMER LOGOUT
+# =====================================================
+
+@app.route("/customer/logout")
+def customer_logout():
+
+    session.pop("customer_id", None)
+    session.pop("customer_name", None)
+
+    flash("You have been logged out.", "success")
+
+    return redirect(url_for("store"))
+
+
+# =====================================================
+# FORGOTTEN PASSWORD
+# =====================================================
 
 @app.route("/forgotten_password")
 def forgotten_password():
